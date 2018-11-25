@@ -1,0 +1,44 @@
+---
+
+- name: Installing multimedia support
+  apt:
+    pkg: ubuntu-restricted-extras
+
+- name: Install Spotify
+  snap:
+    name: spotify
+    state: present 
+
+- name: Install Skype
+  snap:
+    name: skype
+    state: present  
+
+- name: remove Firefox
+  apt:
+    pkg: firefox
+    state: absent  
+
+- name: Install Chromium
+  snap:
+    name: chromium
+    state: present  
+
+- name: Install Slack
+  snap:
+    name: slack
+    state: present  
+
+- name: Install Shutter
+  snap:
+    name: shutter
+    state: present  
+
+- name: Install VLC
+  snap:
+    name: vlc
+    state: present 
+
+- name: Install Gimp
+  apt:
+    name: gimp 
