@@ -1,3 +1,43 @@
-- name: added in 2.4, previously you used 'include'
-- import_tasks: ubuntu.yml
-  when: ansible_facts['os_family']|lower == 'ubuntu'
+---
+
+- name: Installing multimedia support
+  apt:
+    pkg: ubuntu-restricted-extras
+
+- name: Install Spotify
+  flatpak:
+    name:  com.spotify.Client
+    state: present
+
+- name: Install Skype
+  flatpak:
+    name:  com.skype.Client
+    state: present
+
+- name: remove Firefox
+  apt:
+    pkg: firefox
+    state: absent  
+
+- name: Install Chromium
+  apt:
+    name:  chromium-browser
+
+- name: Install Slack
+  flatpak:
+    name:  com.slack.Slack
+    state: present
+
+- name: Install Shutter
+  flatpak:
+    name:  https://s3.amazonaws.com/alexlarsson/spotify-repo/spotify.flatpakref
+    state: present
+
+- name: Install VLC
+  flatpak:
+    name:  org.videolan.VLC
+    state: present
+
+- name: Install Gimp
+  apt:
+    name: gimp 

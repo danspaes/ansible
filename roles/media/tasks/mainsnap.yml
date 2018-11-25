@@ -5,14 +5,12 @@
     pkg: ubuntu-restricted-extras
 
 - name: Install Spotify
-  snap:
+   snap:
     name: spotify
-    state: present 
 
 - name: Install Skype
-  snap:
+   snap:
     name: skype
-    state: present  
 
 - name: remove Firefox
   apt:
@@ -20,25 +18,21 @@
     state: absent  
 
 - name: Install Chromium
-  snap:
+   snap:
     name: chromium
-    state: present  
 
 - name: Install Slack
-  snap:
+   snap:
     name: slack
-    state: present  
 
 - name: Install Shutter
-  snap:
+   snap:
     name: shutter
-    state: present  
 
 - name: Install VLC
-  snap:
+   snap:
     name: vlc
-    state: present 
 
 - name: Install Gimp
   apt:
-    name: gimp 
+    pkg: gimp 
