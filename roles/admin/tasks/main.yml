@@ -11,11 +11,6 @@
     repo: deb http://archive.canonical.com/ubuntu hardy partner
     state: present  
 
-- name: Adding system76 repository
-  apt_repository:
-    repo: deb http://ppa.launchpad.net/system76/pop/ubuntu bionic main
-    state: present  
-
 - name: Adding nordvpn repository
   apt:
     deb: https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb  
@@ -28,9 +23,9 @@
   apt_repository:
     repo: 'ppa:ubuntu-wine/ppa'
 
-    #- name: Adding google repository
-    #  apt_repository:
-    #    repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+- name: Adding google repository
+  apt_repository:
+    repo: deb http://dl.google.com/linux/chrome/deb/ stable main
 
 - name: Configure the Oracle APT key
   apt_key: 
