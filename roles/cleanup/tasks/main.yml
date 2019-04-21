@@ -1,3 +1,7 @@
-- name: added in 2.4, previously you used 'include'
-- import_tasks: ubuntu.yml
-  when: ansible_facts['os_family']|lower == 'ubuntu'
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes

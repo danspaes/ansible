@@ -1,3 +1,32 @@
-- name: added in 2.4, previously you used 'include'
-- import_tasks: ubuntu.yml
-  when: ansible_facts['os_family']|lower == 'ubuntu'
+---
+
+- name: Install Sublime Text
+  flatpak:
+    name: com.sublimetext.three
+    state: present  
+
+- name: Install Visual Studio
+  flatpak:
+    name: com.visualstudio.code
+    state: present  
+
+- name: Install Python packages
+  apt: 
+    name: "{{ pythonGrp }}"
+    state: latest 
+    update_cache: yes 
+    var: 
+      pythonGrp:
+      - python
+      - python-dev
+      - python-pip
+
+- name: Install Java
+  apt:
+    pkg: oracle-java8-set-default
+    update_cache: yes 
+
+- name: Install Scala.
+  apt:
+    deb: http://scala-lang.org/files/archive/scala-2.12.1.deb
+ 

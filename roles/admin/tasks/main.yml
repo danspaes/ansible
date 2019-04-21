@@ -1,3 +1,120 @@
-- name: added in 2.4, previously you used 'include'
-- import_tasks: ubuntu.yml
-  when: ansible_facts['os_family']|lower == 'ubuntu'
+---
+
+- name: Upgrade repositories. 
+  apt: 
+    upgrade: dist
+    allow_unauthenticated: yes
+    autoclean: yes
+
+- name: Adding canonical repository
+  apt_repository:
+    repo: deb http://archive.canonical.com/ubuntu hardy partner
+    state: present  
+
+- name: Adding system76 repository
+  apt_repository:
+    repo: deb http://ppa.launchpad.net/system76/pop/ubuntu bionic main
+    state: present  
+
+- name: Adding nordvpn repository
+  apt:
+    deb: https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb  
+
+    #- name: Adding NVidia repository
+    #  apt_repository:
+    #    repo: 'ppa:graphics-driver/ppa'
+
+- name: Adding wine repository
+  apt_repository:
+    repo: 'ppa:ubuntu-wine/ppa'
+
+    #- name: Adding google repository
+    #  apt_repository:
+    #    repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+
+- name: Configure the Oracle APT key
+  apt_key: 
+    url: https://www.virtualbox.org/download/oracle_vbox.asc 
+    state: present
+
+- name: Configure the VirtualBox APT repositories
+  apt_repository: 
+  #    repo: deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib 
+    repo: deb http://download.virtualbox.org/virtualbox/debian xenial contrib 
+
+    #- name: Install VirtualBox 5.2
+    #  apt: 
+    #    name: virtualbox-5.2 
+    #    update_cache: yes
+    #    allow_unauthenticated: yes
+    #    autoclean: yes
+    
+- name: Adding TLP repo
+  apt_repository:
+    repo: 'ppa:linrunner/tlp'
+
+- name: Adding Java repo
+  apt_repository:
+    repo: 'ppa:webupd8team/java'
+
+- name: Adding Terminator repo
+  apt_repository:
+    repo: 'ppa:gnome-terminator'
+
+- name: Adding Transmission repo
+  apt_repository:
+    repo: 'ppa:transmissionbt/ppa'
+
+- name: Update repositories. 
+  apt: 
+    update_cache: yes
+
+- name: Installing terminator. 
+  apt: 
+    name: terminator
+    update_cache: yes
+
+- name: Installing snap. 
+  apt: 
+    name: snapd
+    update_cache: yes
+
+- name: Installing tilda. 
+  apt: 
+    name: tilda
+    update_cache: yes
+
+- name: Installing powertop. 
+  apt: 
+    name: powertop
+    update_cache: yes
+
+- name: Installing screencast. 
+  apt: 
+    name: byzanz
+    update_cache: yes
+
+- name: Installing xclip. 
+  apt: 
+    name: xclip
+    update_cache: yes
+
+- name: Installing tlp
+  apt:
+    name: "{{ tlpGrp }}"
+    update_cache: yes
+    var:
+      tlpGrp:
+      - tlp 
+      - tlp-rdw
+
+- name: Installing transmission
+  apt:
+    name: "{{ transGrp }}"
+    update_cache: yes
+    var:
+      transGrp:
+      - transmission-cli 
+      - transmission-common 
+      - transmission-daemon 
+

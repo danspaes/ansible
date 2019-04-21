@@ -1,0 +1,5 @@
+---
+
+- name: added in 2.4, previously you used 'include'
+- import_tasks: ubuntu.yml
+  when: ansible_facts['os_family']|lower == 'ubuntu'
