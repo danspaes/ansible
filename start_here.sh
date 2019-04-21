@@ -16,8 +16,4 @@ echo "Installing Git..."
 
 sudo apt-get install git -y 
 
-echo "Cloning repository..... "
-
-git clone $repoUrli
-
 ansible-pull -U $repoUrl -C $branch 

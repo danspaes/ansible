@@ -7,5 +7,4 @@
     - { role: ux, become: true }
     - { role: media, become: true }
     - { role: prog, become: true }
-    - { role: devops, become: true }
     - { role: cleanup, become: true }
