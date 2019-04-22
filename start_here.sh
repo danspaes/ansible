@@ -16,4 +16,6 @@ echo "Installing Git..."
 
 sudo apt-get install git -y 
 
-ansible-pull -U $repoUrl -C $branch 
+sudo cat hosts > /etc/ansible/hosts
+
+ansible-pull -U $repoUrl -C $branch

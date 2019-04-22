@@ -1,4 +1,9 @@
-   - name: "[ Cleanup ] Clean apt with autoclean and autoremove"
+---
+
+- hosts: all
+  tasks:
+
+  - name: "[ Cleanup ] Clean apt with autoclean and autoremove"
      apt:
        autoclean: yes
        autoremove: yes 

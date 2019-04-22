@@ -1,3 +1,8 @@
+---
+
+- hosts: all
+  tasks:
+
   - name: "[ Programing ] - Installing flatpak type applications: Sublime Text, Visual Studio Code" 
     flatpak: 
        name: "{{item}}" 
