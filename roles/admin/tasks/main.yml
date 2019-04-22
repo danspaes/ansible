@@ -56,6 +56,7 @@
        - xclip
        - powertop
        - tilda
+       - vim
 
    - name: "[ Admin ] Remove applications with security breach: mono and orca"
      apt:

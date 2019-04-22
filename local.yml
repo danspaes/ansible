@@ -1,7 +1,14 @@
 ---
 
 - name: Ubuntu bionic environment playbook
-  hosts: all
+- hosts:
+    - localhost
+    - travis-ci
+  remote_user: ansible
+  become: true
+  become_user: root
+  become_method: sudo
+  gather_facts: true
   roles:
     - { role: admin, become: true }
     - { role: devops, become: true }
