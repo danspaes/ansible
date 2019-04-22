@@ -1,115 +1,73 @@
 ---
+- hosts: localhost
+  become : yes 
+  tasks:
 
-- name: Upgrade repositories. 
-  apt: 
-    upgrade: dist
-    allow_unauthenticated: yes
-    autoclean: yes
+   - name: "[ Admin ] Update all packages to the latest version"
+     apt:
+       upgrade: dist
 
-- name: Adding canonical repository
-  apt_repository:
-    repo: deb http://archive.canonical.com/ubuntu hardy partner
-    state: present  
+   - name: "[ Admin ] Add key to Java/Kubernetes repo"
+     apt_key:
+       keyserver: hkp://keyserver.ubuntu.com:80
+       id: "{{ item }}"
+     with_items:
+     - 73C3DB2A
+     - 2EE0EA64E40A89B84B2DF73499E82A75642AC823
 
-- name: Adding nordvpn repository
-  apt:
-    deb: https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb  
+   - name: "[ Admin ] Add an Apt signing key: Kubernetes and docker"
+     apt_key:
+       url: "{{ item }}" 
+       state: present
+     with_items:
+     - https://packages.cloud.google.com/apt/doc/apt-key.gpg
+     - https://download.docker.com/linux/ubuntu/gpg 
 
-    #- name: Adding NVidia repository
-    #  apt_repository:
-    #    repo: 'ppa:graphics-driver/ppa'
+   - name: "[ Admin ] Adding repositories from source list: Ubuntu Canonical, Java, Docker, Kubernetes, sbt"
+     apt_repository: 
+       repo: "{{ item }}" 
+       state: present 
+       update_cache: yes 
+     with_items: 
+     - deb-src http://archive.canonical.com/ubuntu disco partner
+     - deb-src http://ppa.launchpad.net/linuxuprising/java/ubuntu bionic main 
+     - deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+     - deb http://apt.kubernetes.io/ kubernetes-xenial main
+     - deb https://dl.bintray.com/sbt/debian /
 
-- name: Adding wine repository
-  apt_repository:
-    repo: 'ppa:ubuntu-wine/ppa'
+   - name: "[ Admin ] Install deb packages: VirtualBox, NordVpn "
+     apt: 
+       deb: "{{ item }}"
+     with_items: 
+     - https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/nordvpn-release_1.0.0_all.deb 
 
-- name: Adding google repository
-  apt_repository:
-    repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+   - name: "[ Admin ] Install packages: Codecs and basic dev, tlp, tilda, xclip, powertop"
+     apt:
+       name: "{{ packages }}"
+     vars:
+       packages:
+       - flatpak
+       - ubuntu-restricted-extras
+       - tlp
+       - tlp-rdw
+       - apt-transport-https 
+       - ca-certificates 
+       - curl 
+       - software-properties-common
+       - terminator
+       - transmission-cli 
+       - transmission-common 
+       - transmission-daemon 
+       - xclip
+       - powertop
+       - tilda
 
-- name: Configure the Oracle APT key
-  apt_key: 
-    url: https://www.virtualbox.org/download/oracle_vbox.asc 
-    state: present
+   - name: "[ Admin ] Remove applications with security breach: mono and orca"
+     apt:
+       name: ['mono-runtime-common', 'gnome-orca']
+       state: absent 
 
-- name: Configure the VirtualBox APT repositories
-  apt_repository: 
-  #    repo: deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib 
-    repo: deb http://download.virtualbox.org/virtualbox/debian xenial contrib 
-
-    #- name: Install VirtualBox 5.2
-    #  apt: 
-    #    name: virtualbox-5.2 
-    #    update_cache: yes
-    #    allow_unauthenticated: yes
-    #    autoclean: yes
-    
-- name: Adding TLP repo
-  apt_repository:
-    repo: 'ppa:linrunner/tlp'
-
-- name: Adding Java repo
-  apt_repository:
-    repo: 'ppa:webupd8team/java'
-
-- name: Adding Terminator repo
-  apt_repository:
-    repo: 'ppa:gnome-terminator'
-
-- name: Adding Transmission repo
-  apt_repository:
-    repo: 'ppa:transmissionbt/ppa'
-
-- name: Update repositories. 
-  apt: 
-    update_cache: yes
-
-- name: Installing terminator. 
-  apt: 
-    name: terminator
-    update_cache: yes
-
-- name: Installing snap. 
-  apt: 
-    name: snapd
-    update_cache: yes
-
-- name: Installing tilda. 
-  apt: 
-    name: tilda
-    update_cache: yes
-
-- name: Installing powertop. 
-  apt: 
-    name: powertop
-    update_cache: yes
-
-- name: Installing screencast. 
-  apt: 
-    name: byzanz
-    update_cache: yes
-
-- name: Installing xclip. 
-  apt: 
-    name: xclip
-    update_cache: yes
-
-- name: Installing tlp
-  apt:
-    name: "{{ tlpGrp }}"
-    update_cache: yes
-    var:
-      tlpGrp:
-      - tlp 
-      - tlp-rdw
-
-- name: Installing transmission
-  apt:
-    name: "{{ transGrp }}"
-    update_cache: yes
-    var:
-      transGrp:
-      - transmission-cli 
-      - transmission-common 
-      - transmission-daemon 
-
+   - name: "[ Admin ] Clean apt with autoclean and autoremove"
+     apt:
+       autoclean: yes
+       autoremove: yes 

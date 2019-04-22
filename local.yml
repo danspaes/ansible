@@ -1,10 +1,10 @@
 ---
 
-- name: Ubuntu desktop environment playbook
+- name: Ubuntu bionic environment playbook
   hosts: localhost
   roles:
     - { role: admin, become: true }
-    - { role: ux, become: true }
+    - { role: devops, become: true }
     - { role: media, become: true }
     - { role: prog, become: true }
     - { role: cleanup, become: true }

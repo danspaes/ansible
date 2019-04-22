@@ -1,43 +1,31 @@
 ---
+- hosts: localhost
+  become : yes
+  tasks:
+    
+    - name: "[ Media ] Install flatpak applications: Spotify, VLC, Gimp"
+      flatpak:
+        name:  "{{ item }}"
+        state: present
+      with_items:
+      - com.spotify.Client
+      - org.videolan.VLC
+      - org.gimp.GIMP
 
-- name: Installing multimedia support
-  apt:
-    pkg: ubuntu-restricted-extras
+    - name: "[ Media ] Install apt applications: Shutter"
+      apt:
+        name: ['shutter', 'mint-meta-codecs', 'snapd']
+        state: present
 
-- name: Install Spotify
-  flatpak:
-    name:  com.spotify.Client
-    state: present
+    - name: "[ Media ] Install deb applications: Franz, Google Chrome"
+      apt:
+        deb: "{{ item }}"
+        state: present
+      with_items:
+      - https://github.com/meetfranz/franz/releases/download/v5.0.1/franz_5.0.1_amd64.deb
+      - https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb  
 
-- name: Install Skype
-  flatpak:
-    name:  com.skype.Client
-    state: present
-
-- name: remove Firefox
-  apt:
-    pkg: firefox
-    state: absent  
-
-- name: Install Chromium
-  apt:
-    name:  chromium-browser
-
-- name: Install Slack
-  flatpak:
-    name:  com.slack.Slack
-    state: present
-
-- name: Install Shutter
-  flatpak:
-    name:  https://s3.amazonaws.com/alexlarsson/spotify-repo/spotify.flatpakref
-    state: present
-
-- name: Install VLC
-  flatpak:
-    name:  org.videolan.VLC
-    state: present
-
-- name: Install Gimp
-  apt:
-    name: gimp 
+    - name: "[ Media ] Remove Firefox"
+      apt:
+        pkg: firefox
+        state: absent  
